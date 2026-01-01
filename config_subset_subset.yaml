@@ -1,0 +1,53 @@
+data:
+  batch_size: 16
+  celeba_path: data/processed/celeba_subset
+  image_size: 256
+  num_workers: 4
+  style_augmentation: true
+  style_jitter: 0.1
+  train_split: 0.95
+  wikiart_path: data/processed/wikiart_subset
+evaluation:
+  metrics:
+  - fid
+  - identity_similarity
+  - lpips
+  num_samples: 1000
+model:
+  discriminator:
+    base_channels: 64
+    num_layers: 3
+    use_sn: true
+  generator:
+    base_channels: 64
+    num_downsampling: 4
+    num_residual_blocks: 9
+    use_adain: true
+  style_encoder:
+    base_channels: 32
+    style_dim: 512
+  text_encoder:
+    clip_model: ViT-B/32
+    embed_dim: 512
+paths:
+  checkpoints: runs/checkpoints
+  logs: runs/logs
+  results: evaluations
+project:
+  author: Your Name
+  description: One-shot face stylization with identity preservation
+  name: multimodal-face-stylization
+training:
+  beta1: 0.5
+  beta2: 0.999
+  epochs: 60
+  log_interval: 100
+  loss_weights:
+    adversarial: 1.0
+    clip: 2.0
+    identity: 10.0
+    perceptual: 10.0
+    style: 5.0
+  lr_d: 0.0002
+  lr_g: 0.0002
+  save_interval: 5

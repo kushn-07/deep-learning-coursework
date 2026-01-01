@@ -1,0 +1,76 @@
+# Project Configuration
+project:
+  name: "multimodal-face-stylization"
+  description: "One-shot face stylization with identity preservation"
+  author: "Your Name"
+
+# Data Configuration
+data:
+  celeba_path: "data/processed/celeba"
+  wikiart_path: "data/processed/wikiart"
+  image_size: 256
+  batch_size: 16
+  num_workers: 4
+  
+  # Train/Val split
+  train_split: 0.95
+  
+  # Style augmentations
+  style_augmentation: True
+  style_jitter: 0.1
+
+# Model Architecture
+model:
+  # Generator
+  generator:
+    base_channels: 64
+    num_downsampling: 4
+    num_residual_blocks: 9
+    use_adain: True
+    
+  # Style Encoder  
+  style_encoder:
+    base_channels: 32
+    style_dim: 512
+    
+  # Discriminator
+  discriminator:
+    base_channels: 64
+    num_layers: 3
+    use_sn: True  # spectral normalization
+    
+  # Text Encoder (CLIP)
+  text_encoder:
+    clip_model: "ViT-B/32"
+    embed_dim: 512
+
+# Training
+training:
+  epochs: 100
+  lr_g: 0.0002
+  lr_d: 0.0002
+  beta1: 0.5
+  beta2: 0.999
+  
+  # Loss weights
+  loss_weights:
+    adversarial: 1.0
+    identity: 10.0
+    perceptual: 10.0
+    style: 5.0
+    clip: 2.0
+    
+  # Checkpointing
+  save_interval: 5
+  log_interval: 100
+
+# Evaluation
+evaluation:
+  metrics: ["fid", "identity_similarity", "lpips"]
+  num_samples: 1000
+  
+# Paths
+paths:
+  checkpoints: "runs/checkpoints"
+  logs: "runs/logs"
+  results: "evaluations"

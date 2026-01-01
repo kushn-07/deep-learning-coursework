@@ -1,0 +1,39 @@
+# MINIMAL CONFIG FOR QUICK EXPERIMENTS
+project:
+  name: "face-stylization-minimal"
+
+data:
+  celeba_path: "data/processed/celeba_subset"
+  wikiart_path: "data/processed/wikiart_subset"
+  image_size: 256
+  batch_size: 8  # Smaller for debugging
+  num_workers: 2
+  train_split: 0.95
+
+model:
+  generator:
+    base_channels: 64
+    num_downsampling: 3  # Fewer layers
+    num_residual_blocks: 6  # Reduced from 9
+    use_adain: True
+    
+  style_encoder:
+    base_channels: 16  # Smaller
+    style_dim: 128  # Reduced dimension
+    
+  discriminator:
+    base_channels: 32
+    num_layers: 3
+
+training:
+  epochs: 60  # Reasonable for MSc
+  lr_g: 0.0002
+  lr_d: 0.0002
+  beta1: 0.5
+  
+  loss_weights:
+    adversarial: 1.0
+    identity: 10.0
+    perceptual: 10.0
+    style: 5.0
+    clip: 2.0

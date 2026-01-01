@@ -1,0 +1,29 @@
+# config_super_minimal.yaml
+project:
+  name: "test-training"
+
+data:
+  celeba_path: "data/processed/celeba_subset"
+  wikiart_path: "data/processed/wikiart_subset"
+  image_size: 64    # Very small for testing
+  batch_size: 2     # Tiny batch
+  num_workers: 0
+  train_split: 0.95
+
+model:
+  generator:
+    base_channels: 16  # Very small
+  style_encoder:
+    base_channels: 8
+    style_dim: 32
+  discriminator:
+    base_channels: 16
+    num_layers: 2
+
+training:
+  epochs: 3          # Just 3 epochs
+  lr_g: 0.0002
+  lr_d: 0.0002
+  beta1: 0.5
+  beta2: 0.999      # ADD THIS LINE
+  save_interval: 1   # Save every epoch

@@ -1,0 +1,45 @@
+# config_minimal_test.yaml
+project:
+  name: "face-stylization-test"
+
+data:
+  celeba_path: "data/processed/celeba_subset"
+  wikiart_path: "data/processed/wikiart_subset"
+  image_size: 128  # Smaller for testing
+  batch_size: 4    # Very small for testing
+  num_workers: 0   # No multiprocessing for debugging
+  train_split: 0.95
+
+model:
+  generator:
+    base_channels: 32
+    num_downsampling: 2  # Simpler
+    num_residual_blocks: 2
+    use_adain: True
+    
+  style_encoder:
+    base_channels: 16
+    style_dim: 64  # Smaller for testing
+    
+  discriminator:
+    base_channels: 32
+    num_layers: 2
+    use_sn: True
+    
+  text_encoder:
+    embed_dim: 512
+
+training:
+  epochs: 5  # Just a few epochs for testing
+  lr_g: 0.0002
+  lr_d: 0.0002
+  beta1: 0.5
+  
+  loss_weights:
+    adversarial: 1.0
+    identity: 10.0
+    perceptual: 5.0
+    style: 3.0
+    clip: 2.0
+    
+  save_interval: 2

@@ -1,0 +1,71 @@
+# config_proper.yaml
+project:
+  name: "msc-face-stylization-proper"
+  description: "Multimodal one-shot face stylization with identity preservation"
+  author: "Your Name"
+
+data:
+  celeba_path: "data/processed/celeba_subset"
+  wikiart_path: "data/processed/wikiart_subset"
+  image_size: 128
+  batch_size: 16
+  num_workers: 2
+  train_split: 0.95
+  style_augmentation: True
+
+model:
+  generator:
+    base_channels: 64
+    num_downsampling: 4
+    num_residual_blocks: 9
+    use_adain: True
+    
+  style_encoder:
+    base_channels: 32
+    style_dim: 256
+    
+  discriminator:
+    base_channels: 64
+    num_layers: 3
+    use_sn: True
+    
+  text_encoder:
+    clip_model: "ViT-B/32"
+    embed_dim: 512
+
+training:
+  epochs: 50
+  lr_g: 0.0002
+  lr_d: 0.0002
+  beta1: 0.5
+  beta2: 0.999
+  
+  # Loss weights (CRITICAL for MSc)
+  loss_weights:
+    adversarial: 1.0
+    identity: 10.0      # High weight for identity preservation
+    perceptual: 10.0    # Preserve facial structure
+    style: 5.0         # Style transfer strength
+    clip: 2.0          # Text alignment
+    
+  # Learning rate scheduling
+  lr_scheduler:
+    use_scheduler: True
+    step_size: 20
+    gamma: 0.5
+    
+  # Gradient clipping
+  gradient_clip: 1.0
+    
+  # Checkpointing
+  save_interval: 5
+  log_interval: 100
+  
+  # Early stopping
+  patience: 10
+  min_delta: 0.001
+
+evaluation:
+  metrics: ["fid", "identity_similarity", "lpips"]
+  num_test_samples: 1000
+  test_interval: 5

@@ -1,0 +1,25 @@
+data:
+  batch_size: 2
+  celeba_path: data/processed/celeba_subset
+  image_size: 64
+  num_workers: 0
+  train_split: 0.95
+  wikiart_path: data/processed/wikiart_subset
+model:
+  discriminator:
+    base_channels: 16
+    num_layers: 2
+  generator:
+    base_channels: 16
+  style_encoder:
+    base_channels: 8
+    style_dim: 32
+project:
+  name: test-training
+training:
+  beta1: 0.5
+  beta2: 0.999
+  epochs: 3
+  lr_d: 0.0002
+  lr_g: 0.0002
+  save_interval: 1
