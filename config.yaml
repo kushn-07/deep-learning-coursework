@@ -1,0 +1,59 @@
+# ONE CONFIG FILE FOR EVERYTHING
+# config.yaml
+
+# Basic project info
+project:
+  name: "msc-face-stylization"
+  author: "Your Name"
+
+# Dataset paths (CHANGE THESE TO YOUR PATHS)
+data:
+  celeba_path: "data/processed/celeba_subset"  # Your 50K subset
+  wikiart_path: "data/processed/wikiart_subset"  # Your 12K subset
+  image_size: 128  # Good balance: 64 (fast), 128 (better), 256 (best)
+  batch_size: 16   # Adjust based on GPU memory: 4 (small), 16 (medium), 32 (large)
+  num_workers: 2   # 0 for debugging, 2-4 for training
+  train_split: 0.95
+
+# Model architecture (KEEP THESE DEFAULT)
+model:
+  # Generator
+  generator:
+    base_channels: 64
+    num_downsampling: 4
+    num_residual_blocks: 6
+    use_adain: True
+  
+  # Style Encoder
+  style_encoder:
+    base_channels: 32
+    style_dim: 256
+  
+  # Discriminator
+  discriminator:
+    base_channels: 64
+    num_layers: 3
+  
+  # Text Encoder (CLIP)
+  text_encoder:
+    embed_dim: 512
+
+# Training settings
+training:
+  epochs: 50           # Train for 50 epochs
+  lr_g: 0.0002         # Generator learning rate
+  lr_d: 0.0002         # Discriminator learning rate
+  beta1: 0.5
+  beta2: 0.999
+  
+  # Loss weights (MOST IMPORTANT FOR MSc)
+  loss_weights:
+    adversarial: 1.0    # GAN loss
+    identity: 10.0      # Identity preservation (VERY IMPORTANT)
+    perceptual: 5.0     # Facial structure
+    style: 3.0          # Style transfer
+    clip: 2.0           # Text alignment
+  
+  # Checkpointing
+  save_interval: 5      # Save every 5 epochs
+  log_interval: 100     # Log every 100 batches

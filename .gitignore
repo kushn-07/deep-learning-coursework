@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Data
+data/raw/
+data/processed/
+
+# Model checkpoints
+*.pth
+*.pt
+*.ckpt
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# Training outputs
+runs/
+inference_results/
+
+# Images / outputs
+*.png
+*.jpg
+*.jpeg
+
+# Notebooks
+*.ipynb
